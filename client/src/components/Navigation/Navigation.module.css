@@ -1,0 +1,27 @@
+.nav{
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    width: 50px;
+    background: black;
+    color: white;
+    position: fixed;
+    width: 100%;
+    top: 0;
+}
+
+.nav h2{
+    margin: 0;
+    padding: 14px;
+}
+
+.nav p{
+    padding: 14px;
+    margin: 0;
+}
+
+.nav p:hover{
+    background: grey;
+    
+    cursor: pointer;
+}

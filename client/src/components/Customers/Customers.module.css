@@ -1,0 +1,26 @@
+.body{
+text-align: start;
+margin: 40px;
+}
+
+.Customer{
+    background-color: #a40606;
+    background-image: linear-gradient(315deg, #a40606 0%, #d98324 74%);
+    border-radius: 6px;
+    margin: 10px;
+    padding: 8px 18px;
+    font-weight: bold;
+    width: fit-content;
+    color: white;
+}
+
+.custContainer{
+    display: flex;
+}
+
+.Heading{
+    color: #5e3f1d;
+    border-bottom: 2px solid #5e3f1d;
+    font-size: 20x;
+    padding-bottom: 8px;
+}
