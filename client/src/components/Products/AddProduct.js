@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState } from 'react';
 import AddNewProduct from './AddNewProduct';
 import AddExistingProduct from './AddExistingProduct';
 
@@ -28,7 +28,7 @@ const AddProduct = (props) => {
             {typeViewVisibility ?
                 typeView :
                 newProdViewVisibility?
-                <AddNewProduct click={props.addClick}/>:
+                <AddNewProduct  products={props.products} click={props.addClick}/>:
                 <AddExistingProduct products={props.products} click={props.addClick}/>
             }
         </>

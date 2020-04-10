@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState } from 'react';
 
 const AddDialog = (props) => {
 
@@ -10,8 +10,11 @@ const AddDialog = (props) => {
 
     const addbuttonHandler = (e) => {
         e.preventDefault();
-        if (name)
-            props.addClick(name);
+        if (name){
+            let isDuplicate=props.customers.filter(c=>c.toLowerCase()===name.toLowerCase()).length>0
+            if(!isDuplicate)
+                props.addClick(name);
+        }
     }
 
     return (

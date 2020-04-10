@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState } from 'react';
 
 const AddNewProduct = (props) => {
 
@@ -29,8 +29,11 @@ const AddNewProduct = (props) => {
 
     const addbuttonHandler = (e) => {
         e.preventDefault();
-        if (name && qty && price)
-            props.click('new', { ...getData() })
+        if (name && qty && price){
+            let isDuplicate=props.products.filter(c=>c.toLowerCase()===name.toLowerCase()).length>0
+            if(!isDuplicate)
+                props.click('new', { ...getData() })
+        }
     }
 
     return (

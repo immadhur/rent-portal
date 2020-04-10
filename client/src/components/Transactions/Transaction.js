@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react';
+import React from 'react';
 import style from './Transaction.module.css';
 import Spinner from '../UI/Spinner/Spinner';
 import Table from '../UI/Table/Table';

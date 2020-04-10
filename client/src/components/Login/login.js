@@ -15,7 +15,7 @@ const Login = (props) => {
 
     return (
         <form className={style.Body}>
-            <h2>LOGIN</h2>
+            <h2>{props.isLogin ? 'LOGIN' : 'SIGNUP'}</h2>
             <div className={style.input}>
                 Username: <input type='email' value={username} onChange={(e) => onChangeHandler(e, true)} />
             </div>
@@ -24,8 +24,8 @@ const Login = (props) => {
             </div>
             <p style={{ color: 'red', fontSize: '12px' }}>{props.errorTxt}</p>
             <div>
-                <button className={style.button} onClick={(event) => props.click(event, username, password)}>Login</button>
-                {/* <button className={style.button} onClick={props.secondButtonClick}>{props.isLogin ? 'Signup' : 'Login'}</button> */}
+                <button className={style.button} onClick={(event) => props.click(event, username, password)}>{props.isLogin ? 'Login' : 'Signup'}</button>
+                <button className={style.button} onClick={props.secondButtonClick}>{props.isLogin ? 'Signup' : 'Login'}</button>
             </div>
         </form>
     )

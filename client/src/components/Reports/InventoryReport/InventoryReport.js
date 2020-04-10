@@ -1,6 +1,8 @@
-import React, { useState, useEffect, memo } from 'react';
+import React from 'react';
 import style from './InventoryReport.module.css';
 import Table from '../../UI/Table/Table';
+import * as jsPDF from 'jspdf'
+import html2canvas from 'html2canvas';
 
 const Transaction = (props) => {
 
@@ -25,27 +27,42 @@ const Transaction = (props) => {
         });
         // console.log(rows);
         return rows.length > 0 ?
-            <Table cols={cols} rows={rows} /> :
+            <div className={style.table}>
+                <Table cols={cols} rows={rows} />
+            </div> :
             null;
     }
 
     const getProductView = () => {
         return products.map(p => {
             return (
-                <div>
+                <div className={style.card}>
                     <p>Item Name: {p.product_title}</p>
                     <p>Available Quantity: {p.qty_total}</p>
                     {getTransactionsForProduct(p._id)}
-                    <p>---</p>
                 </div>
             )
         })
     }
 
+    const exportHandler = () => {
+        const input = document.getElementById('inventory');
+        html2canvas(input)
+            .then((canvas) => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF();
+                pdf.addImage(imgData, 'PNG', 0, 0);
+                pdf.save("Inventory-Report.pdf");
+            });
+    }
+
     return (
-        <div className={style.body}>
+        <div className={style.body} id='inventory'>
             <h1 className={style.Heading}>Inventory Report</h1>
-            {getProductView()}
+            <div className={style.cardsView}>
+                {getProductView()}
+            </div>
+            <button onClick={exportHandler}>Export to PDF</button>
         </div>
     );
 }

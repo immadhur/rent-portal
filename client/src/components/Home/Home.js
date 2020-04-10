@@ -9,6 +9,8 @@ import Customer from '../Customers/Customers';
 import Transactions from '../Transactions/Transaction';
 import SummaryReport from '../Reports/SummaryReport/SummaryReport';
 import InventoryReport from '../Reports/InventoryReport/InventoryReport';
+import withErrorHandler from '../../hoc/withErrorHandler';
+import {Redirect} from 'react-router-dom'
 
 const Home = (props) => {
 
@@ -19,6 +21,7 @@ const Home = (props) => {
     let [showAddDialog, setShowAddDialog] = useState(false);
     let [prodLoading, setProdLoading] = useState(true);
     let [custLoading, setCustLoading] = useState(true);
+    let [logout, setLogout] = useState(false);
 
     useEffect(() => {
         try {
@@ -83,11 +86,11 @@ const Home = (props) => {
             settransactionRes(transactions);
             const trans = transactions.map(t => {
                 const product = prod ?
-                    prod.filter(p => p._id == t.product_id)[0].product_title :
-                    productsList.filter(p => p._id == t.product_id)[0].product_title;
+                    prod.filter(p => p._id  === t.product_id)[0].product_title :
+                    productsList.filter(p => p._id  === t.product_id)[0].product_title;
                 const customer = cust ?
-                    cust.filter(p => p._id == t.customer_id)[0].customer_name :
-                    customerList.filter(p => p._id == t.customer_id)[0].customer_name;
+                    cust.filter(p => p._id  === t.customer_id)[0].customer_name :
+                    customerList.filter(p => p._id  === t.customer_id)[0].customer_name;
                 return {
                     date: t.transation_date_time_,
                     customer,
@@ -120,7 +123,7 @@ const Home = (props) => {
 
     async function addProduct(type, data) {
         try {
-            if (type == 'new') {
+            if (type  === 'new') {
                 await axios.post('/product', { ...data }, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -128,7 +131,7 @@ const Home = (props) => {
                 });
             }
             else {
-                let prod = productsList.filter(p => p.product_title == data.product_title)[0];
+                let prod = productsList.filter(p => p.product_title  === data.product_title)[0];
                 const qty = Number(prod.qty_total) + Number(data.qty_total);
                 const res = await axios.patch(`/product/${prod._id}`, { ...data, qty_total: qty }, {
                     headers: {
@@ -152,8 +155,8 @@ const Home = (props) => {
 
     async function addTransaction(data) {
         try {
-            const cust = customerList.filter(p => p.customer_name == data.customer)[0]
-            const prod = productsList.filter(p => p.product_title == data.product)[0];
+            const cust = customerList.filter(p => p.customer_name  === data.customer)[0]
+            const prod = productsList.filter(p => p.product_title  === data.product)[0];
             const dataToSend = {
                 transation_date_time_: getDate(),
                 customer_id: cust._id,
@@ -168,7 +171,7 @@ const Home = (props) => {
             });
             await addProduct('existing', {
                 product_title: data.product,
-                qty_total: data.type === 'In' ? Number(data.qty) : Number(data.qty) * -1,
+                qty_total: data.type  === 'In' ? Number(data.qty) : Number(data.qty) * -1,
             })
             addDialogCloseHandler();
             fetchTransactionData();
@@ -202,12 +205,19 @@ const Home = (props) => {
         }})
     }
 
+    const logoutHandler = ()=>{
+        localStorage.removeItem('token');
+        setLogout(true);
+    }
+
     return (
         <>
-            {prodLoading || custLoading ? <Spinner /> :
+            {logout?
+        <Redirect to='/login'/>:
+        prodLoading || custLoading ? <Spinner /> :
                 <div className={style.body}>
 
-                    <Navigation />
+                    <Navigation logout={logoutHandler}/>
                     <Initialize click={addDialogHandler} addProduct={addProduct}
                         closeDialog={addDialogCloseHandler} addDialog={addDialogHandler}
                         addCustomer={addCustomer} showDialog={showAddDialog} addTransaction={addTransaction}
@@ -223,4 +233,4 @@ const Home = (props) => {
     );
 }
 
-export default Home;
+export default withErrorHandler(Home, axios);

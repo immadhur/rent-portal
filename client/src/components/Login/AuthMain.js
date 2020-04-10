@@ -8,12 +8,14 @@ const AuthMain = (props) => {
 
     let [isLoginSucess, setIsLoginSuccess] = useState(false);
     let [loading, setLoading] = useState(false);
+    let [isLogin, setIsLogin] = useState(true);
 
     const loginButtonClickHandler = async (event, username, password) => {
         event.preventDefault();
         try{
             setLoading(true);
-            let res=await axios.post('/login', {email:username, password})
+            let url=isLogin?'/login':'/signup'
+            let res=await axios.post(url, {email:username, password})
             localStorage.setItem('token', res.data.token);
             setIsLoginSuccess(true);
         }
@@ -27,7 +29,7 @@ const AuthMain = (props) => {
 
     const secondButtonHandler = (e) => {
         e.preventDefault();
-        // setIsLogin(!isLogin);
+        setIsLogin(!isLogin);
     }
 
     return (
@@ -37,7 +39,7 @@ const AuthMain = (props) => {
                 <div className="App">
                     {isLoginSucess ?
                         <Redirect to='/' /> :
-                        <Login click={loginButtonClickHandler} errorText secondButtonClick={secondButtonHandler} errorTxt={props.errorText} />
+                        <Login click={loginButtonClickHandler} errorText secondButtonClick={secondButtonHandler} errorTxt={props.errorText} isLogin={isLogin}/>
                     }
                 </div>
             }

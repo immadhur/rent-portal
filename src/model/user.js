@@ -4,7 +4,6 @@ const jwt=require('jsonwebtoken');
 const schema=mongoose.Schema({
     name:{
         type:String,
-        required:true,
         unique:true
     },
     email:{

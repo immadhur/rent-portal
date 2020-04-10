@@ -6,6 +6,7 @@ const userModel=require('../model/user');
 router.post('/signup', async (req, res)=>{
     try {
         console.log("Signup");
+        console.log(req.body);
         const user=new userModel(req.body);
         await user.save();
         const token=await user.GenerateToken();
@@ -25,6 +26,7 @@ router.post('/signup', async (req, res)=>{
 
 router.post('/login', async (req, res)=>{
     try {
+        console.log(req.body);
         const loginUser = await userModel.loginUser(req.body.email, req.body.password);
         // console.log(loginUser);
          const token=await loginUser.GenerateToken();

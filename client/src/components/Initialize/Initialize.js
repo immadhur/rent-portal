@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState } from 'react';
 import style from './Initialize.module.css';
 import DialogBoxModel from '../UI/DialogBoxModel/DialogBoxModel';
 import AddCustomer from '../Customers/AddCustomer';
@@ -36,7 +36,7 @@ const Initialize = (props) => {
         <div className={style.body}>
             <DialogBoxModel show={props.showDialog} close={closeDialogHandler}>
                 {custDialog ?
-                    <AddCustomer addClick={props.addCustomer} /> :
+                    <AddCustomer addClick={props.addCustomer} customers={props.customers}/> :
                     prodDialog ?
                         <AddProduct products={props.products} addClick={props.addProduct} /> :
                         transDialog ?
