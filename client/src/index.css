@@ -11,3 +11,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.form{
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  padding: 0px 10px;
+}
+
+.formItem{
+  display: grid;
+  grid-template-columns: 50% 50%;
+  padding-bottom: 10px;
+}
+.formItem label{
+  grid-column-start: 1;
+  text-align: start;
+}
+
+.formInput{
+  text-align: start;
+}
+
+.form button{
+  align-self: center;
+  margin-top: 10px;
+}

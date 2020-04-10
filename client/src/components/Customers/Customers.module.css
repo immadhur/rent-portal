@@ -16,6 +16,7 @@ margin: 40px;
 
 .custContainer{
     display: flex;
+    flex-direction: row;
 }
 
 .Heading{
@@ -23,4 +24,10 @@ margin: 40px;
     border-bottom: 2px solid #5e3f1d;
     font-size: 20x;
     padding-bottom: 8px;
+}
+
+@media(max-width:500px){
+    .custContainer{
+        flex-direction: column;
+    }
 }

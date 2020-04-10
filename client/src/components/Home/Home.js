@@ -1,20 +1,21 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import style from './Home.module.css';
-import { Redirect } from 'react-router-dom';
-import DialogBoxModel from '../UI/DialogBoxModel/DialogBoxModel';
 import Navigation from '../Navigation/Navigation';
 import Spinner from '../UI/Spinner/Spinner';
 import Initialize from '../Initialize/Initialize';
 import Products from '../Products/Products';
 import Customer from '../Customers/Customers';
 import Transactions from '../Transactions/Transaction';
+import SummaryReport from '../Reports/SummaryReport/SummaryReport';
+import InventoryReport from '../Reports/InventoryReport/InventoryReport';
 
 const Home = (props) => {
 
     let [productsList, setProductsList] = useState([]);
     let [customerList, setCustomerList] = useState([]);
     let [transactionsList, setTransactionsList] = useState([]);
+    let [transactionRes, settransactionRes] = useState([]);
     let [showAddDialog, setShowAddDialog] = useState(false);
     let [prodLoading, setProdLoading] = useState(true);
     let [custLoading, setCustLoading] = useState(true);
@@ -29,9 +30,9 @@ const Home = (props) => {
     }, [])
 
     async function fetchAllData() {
-        await fetchProductData();
-        await fetchCustomerData();
-        await fetchTransactionData();
+        const prod = await fetchProductData();
+        const cust = await fetchCustomerData();
+        await fetchTransactionData(prod, cust);
     }
 
     async function fetchProductData() {
@@ -43,9 +44,8 @@ const Home = (props) => {
                 }
             });
             let products = res.data.products;
-            console.log(products);
             setProductsList([...products]);
-            console.log('In Product');
+            return [...products]; //as state is not getting updated on first render
         } catch (error) {
             console.log(error);
         } finally {
@@ -62,8 +62,8 @@ const Home = (props) => {
                 }
             });
             let customers = res.data.customers;
-            console.log(customers);
             setCustomerList([...customers]);
+            return [...customers];//as state is not getting updated on first render
         } catch (error) {
             console.log(error);
         } finally {
@@ -71,7 +71,7 @@ const Home = (props) => {
         }
     }
 
-    const fetchTransactionData = async () => {
+    const fetchTransactionData = async (prod, cust) => {
         try {
             // setCustLoading(true);
             const res = await axios.get('/transaction', {
@@ -80,19 +80,22 @@ const Home = (props) => {
                 }
             });
             let transactions = res.data.transaction;
+            settransactionRes(transactions);
             const trans = transactions.map(t => {
-                console.log(t);
-                const prod = productsList.filter(p => p._id == t.product_id)[0].product_title;
-                const cust = customerList.filter(p => p._id == t.customer_id)[0].customer_name;
+                const product = prod ?
+                    prod.filter(p => p._id == t.product_id)[0].product_title :
+                    productsList.filter(p => p._id == t.product_id)[0].product_title;
+                const customer = cust ?
+                    cust.filter(p => p._id == t.customer_id)[0].customer_name :
+                    customerList.filter(p => p._id == t.customer_id)[0].customer_name;
                 return {
-                    qty: t.quantity,
                     date: t.transation_date_time_,
-                    product: prod,
-                    customer: cust,
+                    customer,
+                    product,
+                    qty: t.quantity,
                     type: t.transation_type
                 }
             })
-            console.log(trans);
             setTransactionsList([...trans]);
         } catch (error) {
             console.log(error);
@@ -103,7 +106,7 @@ const Home = (props) => {
 
     async function addCustomer(name) {
         try {
-            const res = await axios.post('/customer', { customer_name: name }, {
+            await axios.post('/customer', { customer_name: name }, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
@@ -118,7 +121,7 @@ const Home = (props) => {
     async function addProduct(type, data) {
         try {
             if (type == 'new') {
-                const res = await axios.post('/product', { ...data }, {
+                await axios.post('/product', { ...data }, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }
@@ -126,7 +129,6 @@ const Home = (props) => {
             }
             else {
                 let prod = productsList.filter(p => p.product_title == data.product_title)[0];
-                console.log(prod);
                 const qty = Number(prod.qty_total) + Number(data.qty_total);
                 const res = await axios.patch(`/product/${prod._id}`, { ...data, qty_total: qty }, {
                     headers: {
@@ -159,11 +161,15 @@ const Home = (props) => {
                 transation_type: data.type,
                 quantity: data.qty
             }
-            const res = await axios.post('/transaction', { ...dataToSend }, {
+            await axios.post('/transaction', { ...dataToSend }, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             });
+            await addProduct('existing', {
+                product_title: data.product,
+                qty_total: data.type === 'In' ? Number(data.qty) : Number(data.qty) * -1,
+            })
             addDialogCloseHandler();
             fetchTransactionData();
         } catch (error) {
@@ -188,18 +194,31 @@ const Home = (props) => {
         return customerList.map(x => x.customer_name);
     }
 
+    const getProductsForSummary=()=>{
+        return productsList.map(p=>{
+            return {
+            product:p.product_title,
+            qty:p.qty_total
+        }})
+    }
+
     return (
         <>
-            <div className={style.body}>
-                <Navigation />
-                <Initialize click={addDialogHandler} addProduct={addProduct}
-                    closeDialog={addDialogCloseHandler} addDialog={addDialogHandler}
-                    addCustomer={addCustomer} showDialog={showAddDialog} addTransaction={addTransaction}
-                    products={[...getProductsFromList()]} customers={[...getCustomersFromList()]} />
-                <Products products={productsList} loading={prodLoading} />
-                <Customer customers={customerList} loading={custLoading} />
-                <Transactions transactions={transactionsList} loading={false} />
-            </div>
+            {prodLoading || custLoading ? <Spinner /> :
+                <div className={style.body}>
+
+                    <Navigation />
+                    <Initialize click={addDialogHandler} addProduct={addProduct}
+                        closeDialog={addDialogCloseHandler} addDialog={addDialogHandler}
+                        addCustomer={addCustomer} showDialog={showAddDialog} addTransaction={addTransaction}
+                        products={[...getProductsFromList()]} productDetails={[...productsList]} customers={[...getCustomersFromList()]} />
+                    <Products products={productsList} loading={prodLoading} />
+                    <Customer customers={customerList} loading={custLoading} />
+                    <Transactions transactions={transactionsList} loading={false} />
+                    <SummaryReport productsList={getProductsForSummary()}/>
+                    <InventoryReport products={productsList} transactions={transactionRes}/>
+                </div>
+            }
         </>
     );
 }

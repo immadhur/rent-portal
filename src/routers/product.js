@@ -39,12 +39,17 @@ router.get('/product',auth, async (req, res)=>{
 
 router.patch('/product/:id', auth, async (req, res)=>{
     try {
-        // const product=await productModel.findById(req.params.id);
+        // let product=await productModel.findById(req.params.id);
         // if(!product)
-            // throw 'product not found!';
-        // product.data=req.body.data;
-        await productModel.findOneAndUpdate({_id:req.params.id, ...req.body});
-        console.log('product');
+        //     throw 'product not found!';
+        // product={...product, ...req.body};//req.body.data;
+        // console.log(product)
+        await productModel.findOne({_id:req.params.id},(err, doc)=>{
+            console.log(req.body);
+            doc.qty_total=req.body.qty_total;
+            doc.save()
+        } );
+        // console.log(product.data);
         // await product.save();
         res.status(200).send({
             success:true

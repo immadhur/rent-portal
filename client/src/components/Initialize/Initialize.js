@@ -1,13 +1,9 @@
 import React, { useState, useEffect, memo } from 'react';
-import axios from 'axios';
 import style from './Initialize.module.css';
-import { Redirect } from 'react-router-dom';
 import DialogBoxModel from '../UI/DialogBoxModel/DialogBoxModel';
-import Navigation from '../Navigation/Navigation';
-import Spinner from '../UI/Spinner/Spinner';
 import AddCustomer from '../Customers/AddCustomer';
 import AddProduct from '../Products/AddProduct'
-import AddTransaction from '../Transactions/AddTransaction';
+import AddTransaction from '../Transactions/AddTransaction/AddTransaction';
 
 const Initialize = (props) => {
 
@@ -44,7 +40,8 @@ const Initialize = (props) => {
                     prodDialog ?
                         <AddProduct products={props.products} addClick={props.addProduct} /> :
                         transDialog ?
-                            <AddTransaction products={props.products} customer={props.customers} addClick={props.addTransaction}/> :
+                            <AddTransaction productDetails={props.productDetails} products={props.products} 
+                            customer={props.customers} addClick={props.addTransaction}/> :
                             null}
             </DialogBoxModel>
             <button onClick={prodClickHandler}>+ Product</button>

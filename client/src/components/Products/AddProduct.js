@@ -1,5 +1,4 @@
 import React, { useState, useEffect, memo } from 'react';
-// import style from './Initialize.module.css';
 import AddNewProduct from './AddNewProduct';
 import AddExistingProduct from './AddExistingProduct';
 

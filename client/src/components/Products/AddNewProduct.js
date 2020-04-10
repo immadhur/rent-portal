@@ -1,5 +1,4 @@
 import React, { useState, useEffect, memo } from 'react';
-// import style from './Initialize.module.css';
 
 const AddNewProduct = (props) => {
 
@@ -28,21 +27,29 @@ const AddNewProduct = (props) => {
         }
     }
 
+    const addbuttonHandler = (e) => {
+        e.preventDefault();
+        if (name && qty && price)
+            props.click('new', { ...getData() })
+    }
+
     return (
         <div>
             <h2>Add New Product</h2>
-            <form>
-                <label for='name'>Product Title</label>
-                <input id='name' type='text' onChange={textChangeHandler} value={name} />
-                <label for='qty'>Quantity</label>
-                <input id='qty' type='number' onChange={textChangeHandler} value={qty} />
-                <label for='price'>Price/day</label>
-                <input id='price' type='number' onChange={textChangeHandler} value={price} />
-                <button onClick={(e) => {
-                    e.preventDefault();
-                    console.log(name)
-                    props.click('new', {...getData()})
-                }}>Add</button>
+            <form className='form'>
+                <div className='formItem'>
+                    <label htmlFor='name'>Product Title</label>
+                    <input className='formInput' id='name' type='text' onChange={textChangeHandler} value={name || ''} />
+                </div>
+                <div className='formItem'>
+                    <label htmlFor='qty'>Quantity</label>
+                    <input  className='formInput' id='qty' type='number' onChange={textChangeHandler} value={qty || ''} />
+                </div>
+                <div className='formItem'>
+                    <label htmlFor='price'>Price/day</label>
+                    <input className='formInput'  id='price' type='number' onChange={textChangeHandler} value={price || ''} />
+                </div>
+                <button onClick={addbuttonHandler}>Add</button>
             </form>
         </div>
     );

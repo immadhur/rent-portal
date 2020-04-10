@@ -1,6 +1,4 @@
 import React, { useState, useEffect, memo } from 'react';
-import style from './AddExistingProduct.module.css';
-import DialogBoxModel from '../UI/DialogBoxModel/DialogBoxModel';
 import { Select, MenuItem } from '@material-ui/core';
 
 const AddExistingProduct = (props) => {
@@ -24,26 +22,29 @@ const AddExistingProduct = (props) => {
         }
     }
 
+    const addbuttonHandler = (e) => {
+        e.preventDefault();
+        if (qty)
+            props.click('existing', { ...getData() })
+    }
+
     return (
         <div>
             <h2>Add Existing Product</h2>
-            <form>
-                <div>
-                    <label for='name'>Product Title</label>
-                    <Select labelId="demo-simple-select-required-label" id="name" value={name} onChange={textChangeHandler}>
+            <form className='form'>
+                <div className='formItem'>
+                    <label htmlFor='name'>Product Title</label>
+                    <Select className='formInput' labelId="demo-simple-select-required-label" id="name" value={name || ''} onChange={textChangeHandler}>
                         {props.products.map(prod =>
                             <MenuItem key={prod} value={prod}>{prod}</MenuItem>
                         )}
                     </Select>
                 </div>
-                <div>
-                    <label for='qty'>Quantity</label>
-                    <input id='qty' type='number' onChange={textChangeHandler} value={qty} />
+                <div className='formItem'>
+                    <label htmlFor='qty'>Quantity</label>
+                    <input className='formInput' id='qty' type='number' onChange={textChangeHandler} value={qty || ''} />
                 </div>
-                <button onClick={(e) => {
-                    e.preventDefault();
-                    props.click('existing', { ...getData() })
-                }}>Add</button>
+                <button onClick={addbuttonHandler}>Add</button>
             </form>
         </div>
     );

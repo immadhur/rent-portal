@@ -8,7 +8,6 @@ router.post('/transaction', auth, async (req, res) => {
         const transaction = new transactionModel({
             ...req.body
         });
-        console.log(req.body);
         await transaction.save();
         res.status(200).send({
             success: true
@@ -24,7 +23,6 @@ router.post('/transaction', auth, async (req, res) => {
 router.get('/transaction',auth, async (req, res)=>{
     try {
         const transaction=await transactionModel.find();
-        console.log(transaction);
         res.status(200).send({
             success:true,
             transaction

@@ -24,3 +24,9 @@ margin: 40px;
     font-size: 20x;
     padding-bottom: 8px;
 }
+
+@media(max-width:500px){
+    .custContainer{
+        flex-direction: column;
+    }
+}

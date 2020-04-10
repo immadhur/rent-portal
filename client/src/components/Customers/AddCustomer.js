@@ -1,20 +1,27 @@
 import React, { useState, useEffect, memo } from 'react';
-// import style from './Initialize.module.css';
 
 const AddDialog = (props) => {
 
-    const [name, setName]= useState();
+    const [name, setName] = useState();
 
-    const textChangeHandler=(e)=>{
+    const textChangeHandler = (e) => {
         setName(e.target.value);
     }
 
+    const addbuttonHandler = (e) => {
+        e.preventDefault();
+        if (name)
+            props.addClick(name);
+    }
+
     return (
-        <form>
+        <form className='form'>
             <h2>Add Customer</h2>
-            Customer Name: <input  type='text' value= {name} onChange={textChangeHandler}/>
-            <br/>
-            <button onClick={()=>props.addClick(name)}>Add</button>
+            <div className='formItem'>
+                <label>Customer Name: </label>
+                <input className='formInput' type='text' required={true} value={name || ''} onChange={textChangeHandler} />
+            </div>
+            <button type='submit' onClick={addbuttonHandler}>Add</button>
         </form>
     );
 }
