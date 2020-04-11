@@ -6,8 +6,8 @@ const userModel=require('../model/user');
 router.post('/signup', async (req, res)=>{
     try {
         console.log("Signup");
-        console.log(req.body);
         const user=new userModel(req.body);
+        console.log(user);
         await user.save();
         const token=await user.GenerateToken();
         res.status(201).send({

@@ -2,10 +2,6 @@ const mongoose=require('mongoose');
 const jwt=require('jsonwebtoken');
 
 const schema=mongoose.Schema({
-    name:{
-        type:String,
-        unique:true
-    },
     email:{
         type:String,
         required:true,

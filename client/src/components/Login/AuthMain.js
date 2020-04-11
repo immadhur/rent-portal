@@ -39,7 +39,7 @@ const AuthMain = (props) => {
                 <div className="App">
                     {isLoginSucess ?
                         <Redirect to='/' /> :
-                        <Login click={loginButtonClickHandler} errorText secondButtonClick={secondButtonHandler} errorTxt={props.errorText} isLogin={isLogin}/>
+                        <Login click={loginButtonClickHandler} secondButtonClick={secondButtonHandler} errorTxt={props.errorText} isLogin={isLogin}/>
                     }
                 </div>
             }
