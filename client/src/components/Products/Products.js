@@ -11,7 +11,25 @@ const Products = (props) => {
             {props.loading ? <Spinner /> :
                 <div className={style.prodContainer}>
                     {prodList.map(prod =>
-                        <div key={prod._id} className={style.Product}> {prod.product_title} : {prod.qty_total}</div>
+                        <div key={prod._id} className={style.Product}>
+                            <div className={style.ProductTitle}> {prod.product_title}</div>
+                            <div className={style.ProductTxt}>
+                                <label>Quantity Total: </label>
+                                <label>{prod.qty_total}</label>
+                            </div>
+                            <div className={style.ProductTxt}>
+                                <label>Quantity Booked: </label>
+                                <p>{prod.qty_booked}</p>
+                            </div>
+                            <div className={style.ProductTxt}>
+                                <label>Quantity Available: </label>
+                                <p>{Number(prod.qty_total)-Number(prod.qty_booked)}</p>
+                            </div>
+                            <div className={style.ProductTxt}>
+                                <label>Price/day: </label>
+                                <p>{prod.price}</p>
+                            </div>
+                        </div>
                     )}
                 </div>
             }

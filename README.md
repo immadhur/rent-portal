@@ -37,7 +37,7 @@ This application is deployed on heroku with mongoLab as database.
 
 ***Please find below link to the application -***
 
-[https://madhur-notes-manager.herokuapp.com/](https://madhur-notes-manager.herokuapp.com/)
+[https://tent-house-rent.herokuapp.com/](https://tent-house-rent.herokuapp.com/)
 
 ## About Me
 

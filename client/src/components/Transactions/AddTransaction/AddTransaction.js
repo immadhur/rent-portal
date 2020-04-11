@@ -35,11 +35,15 @@ const AddTransaction = (props) => {
     }
 
     function getCurrQty() {
-        return props.productDetails.filter(p => p.product_title === product)[0].qty_total;
+        let prod = props.productDetails.filter(p => p.product_title === product)[0];
+        if(prod)
+            return Number(prod.qty_total)-Number(prod.qty_booked);
     }
 
     function getCurrQtyFromProduct(prod) {
-        return props.productDetails.filter(p => p.product_title === prod)[0].qty_total;
+        let product = props.productDetails.filter(p => p.product_title === prod)[0];
+        if(product)
+            return prod.qty_total;
     }
 
     function getData() {
@@ -64,7 +68,7 @@ const AddTransaction = (props) => {
 
     return (
         <div>
-            <h2>Add Existing Product</h2>
+            <h2>Add Transaction</h2>
             <form className='form'>
                 <div className='formItem'>
                     <label htmlFor='product'>Product: </label>

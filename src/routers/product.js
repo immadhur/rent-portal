@@ -42,6 +42,7 @@ router.patch('/product/:id', auth, async (req, res)=>{
         await productModel.findOne({_id:req.params.id},(err, doc)=>{
             console.log(req.body);
             doc.qty_total=req.body.qty_total;
+            doc.qty_booked=req.body.qty_booked;
             doc.save()
         } );
         res.status(200).send({

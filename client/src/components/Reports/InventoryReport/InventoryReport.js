@@ -19,7 +19,7 @@ const Transaction = (props) => {
             if (t.product_id === id) {
                 rows.push({
                     id: t._id,
-                    date: t.transation_date_time_,
+                    date: t.transation_date_time,
                     type: t.transation_type,
                     qty: t.quantity
                 });

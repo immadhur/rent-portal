@@ -17,6 +17,7 @@ margin: 40px;
 .custContainer{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .Heading{

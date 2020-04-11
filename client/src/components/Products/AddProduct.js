@@ -18,8 +18,8 @@ const AddProduct = (props) => {
     <form>
         <h2>Add Product</h2>
         <div>
-            <button onClick={() => typeClickHandler('existing')}>Existing Product</button>
-            <button onClick={() => typeClickHandler('new')}>New Product</button>
+            <button style={{magrin:'10px'}} onClick={() => typeClickHandler('existing')}>Existing Product</button>
+            <button style={{magrin:'10px'}} onClick={() => typeClickHandler('new')}>New Product</button>
         </div>
     </form>
 

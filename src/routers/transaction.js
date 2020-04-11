@@ -5,6 +5,7 @@ const transactionModel = require('../model/transaction');
 
 router.post('/transaction', auth, async (req, res) => {
     try {
+        console.log(req.body);
         const transaction = new transactionModel({
             ...req.body
         });

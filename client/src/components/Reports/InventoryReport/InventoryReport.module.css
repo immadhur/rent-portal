@@ -17,8 +17,8 @@
 
     .card{
         border-radius: 8px;
-        border: 2px solid grey;
-        box-shadow: 2px 3px 4px grey;
+        border: 2px solid rgb(238, 236, 236);
+        box-shadow: 3px 1px 5px grey;
         margin: 20px auto;
         padding: 10px 20px;
         max-width: 800px;
