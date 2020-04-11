@@ -146,6 +146,7 @@ const Home = (props) => {
                 else {
                     const qty = Number(prod.qty_total) + Number(data.qty_total);
                     dataToSend['qty_total'] = qty;
+                    dataToSend['qty_booked'] = prod.qty_booked;
                 }
                 const res = await axios.patch(`/product/${prod._id}`, { ...data, ...dataToSend }, {
                     headers: {
@@ -216,7 +217,7 @@ const Home = (props) => {
         return productsList.map(p => {
             return {
                 product: p.product_title,
-                qty: p.qty_total
+                qty: Number(p.qty_total)-Number(p.qty_booked)
             }
         })
     }

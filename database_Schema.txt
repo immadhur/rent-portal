@@ -1,0 +1,24 @@
+'users' collection - 
+- _id(internal)
+- email(required): String
+- password(required): String
+- token(internal): []
+
+'products' collection - 
+- _id(internal)
+- product_title: String
+- qty_total: Number,
+- qty_booked: Number,
+- price: Number
+
+'customers' collection -
+- _id 
+- customer_name: String
+
+'transaction' -
+- _id
+- transation_date_time:String,
+- customer_id:String,
+- product_id:String,
+- transation_type:String,
+- quantity:Number

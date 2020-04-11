@@ -6,7 +6,7 @@ const AddTransaction = (props) => {
     const [qty, setQty] = useState()
     const [product, setProduct] = useState(props.products[0])
     const [customer, setCustomer] = useState(props.customer[0])
-    const [type, setType] = useState('In')
+    const [type, setType] = useState('Out')
     const [currQty, setCurrQty] = useState(getCurrQty())
 
     const textChangeHandler = (e, id) => {
